@@ -7,20 +7,20 @@ import { getSession } from 'next-auth/react';
 
 export default function RequestsListPage({ requestsList }) {
     const router = useRouter();
-    
+
     useEffect(() => {
         const securePage = async () => {
-          const session = await getSession()
-          console.log({ session })
-          if (!session) {
-            router.push("/login");
-          } else if(session?.user.role == "user") {
-            router.push("/login");
-          }
+            const session = await getSession()
+            console.log({ session })
+            if (!session) {
+                router.push("/login");
+            } else if (session?.user.role == "user") {
+                router.push("/login");
+            }
         }
-    
+
         securePage()
-      }, [])
+    }, [router])
 
     const refreshData = () => {
         router.replace(router.asPath);
@@ -28,7 +28,7 @@ export default function RequestsListPage({ requestsList }) {
 
     const approveHandler = async (data) => {
         let res = await approveBookService(data);
-           refreshData();
+        refreshData();
     };
     const rejectHandler = async (data) => {
         const response = await newRequest.delete(`requests/${data.id}`);

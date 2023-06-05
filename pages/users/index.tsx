@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-export default function UserListPage({userList}) {
+export default function UserListPage({ userList }) {
   const router = useRouter();
   const refreshData = () => {
     router.replace(router.asPath);
@@ -16,17 +16,17 @@ export default function UserListPage({userList}) {
       console.log({ session })
       if (!session) {
         router.push("/login");
-      } else if(session?.user.role != "admin") {
+      } else if (session?.user.role != "admin") {
         router.push("/login");
       }
     }
 
     securePage()
-  }, [])
+  }, [router])
 
-  const handleDelete = async(userId) => {
+  const handleDelete = async (userId) => {
     const response = await newRequest.delete(`users/${userId}`);
-      refreshData();
+    refreshData();
   };
   const toggleBlock = async (userId, user) => {
     const response = await newRequest.put(`users/${userId}`, {
@@ -56,9 +56,9 @@ export default function UserListPage({userList}) {
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200">
-          {userList.map((user,i) => (
+          {userList.map((user, i) => (
             <tr key={user.id}>
-              <td className="py-4 px-6">{i+1}</td>
+              <td className="py-4 px-6">{i + 1}</td>
               <td className="py-4 px-6">{user.name}</td>
               <td className="py-4 px-6">{user.email}</td>
               <td className="py-4 px-6 text-center">
@@ -90,14 +90,14 @@ export default function UserListPage({userList}) {
 
 
 export async function getStaticProps() {
-    console.log('Generating / Regenerating userList')
-    const response = await newRequest.get("users?role=user");
-    console.log(response.data);
-  
-    return {
-      props: {
-        userList: response.data
-      },
-      revalidate:1,
-    }
+  console.log('Generating / Regenerating userList')
+  const response = await newRequest.get("users?role=user");
+  console.log(response.data);
+
+  return {
+    props: {
+      userList: response.data
+    },
+    revalidate: 1,
   }
+}

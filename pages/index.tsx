@@ -20,7 +20,7 @@ export default function Home() {
     }
 
     securePage()
-  }, [])
+  }, [router])
 
   return (
     <main  className="min-h-screen">

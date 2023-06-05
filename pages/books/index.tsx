@@ -19,7 +19,7 @@ export default function BookListPage({ bookList }) {
         }
 
         securePage()
-    }, [])
+    }, [router])
 
     const sendIssueRequest = async (book) => {
         let data = { ...book, studentId: session.user.userId };
