@@ -38,8 +38,6 @@ export async function getServerSideProps(context) {
   const { userId } = params
   const response = await newRequest.get(`users/${userId}`
   );
-  // const data = await response.json()
-
   console.log(`Pre-rendering userID ${userId}`)
   return {
     props: {

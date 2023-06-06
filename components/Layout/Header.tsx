@@ -43,7 +43,11 @@ export default function Navbar() {
                                 )}
 
                                 <Link href="/signout">
-                                    <span className="py-5 px-3 text-gray-300 hover:text-white" onClick={() => signOut()}>Log Out</span>
+                                    <span className="py-5 px-3 text-gray-300 hover:text-white" onClick={(e) => {
+                                        e.preventDefault();
+                                        // signOut({ callbackUrl: 'http://localhost:3000/login' })
+                                        signOut()
+                                    }}>Log Out</span>
                                 </Link>
                             </>)}
                         {status != "authenticated" && (

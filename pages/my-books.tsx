@@ -11,20 +11,6 @@ export default function MyBooksPage({ myBooks }) {
         router.replace(router.asPath);
     }
 
-    useEffect(() => {
-        const securePage = async () => {
-          const session = await getSession()
-          console.log({ session })
-          if (!session) {
-            router.push("/login");
-          } else if(session?.user.role != "user") {
-            router.push("/login");
-          }
-        }
-    
-        securePage()
-      }, [router])
-
     return (
         <div className="max-w-6xl mx-auto px-4 py-8 mb-32">
             <div className="flex justify-between mb-4">
@@ -53,15 +39,21 @@ export default function MyBooksPage({ myBooks }) {
 }
 
 
-export async function getStaticProps() {
-    console.log('Generating / Regenerating requests List')
-    // const response = await newRequest.get(" `users/${currentUser.id}`");
-    const response = await newRequest.get("users/3");
-
-    return {
-        props: {
-            myBooks: response.data.issuedBooks
-        },
-        revalidate: 1,
+export async function getServerSideProps(context) {
+    const session = await getSession(context)
+    if (!session) {
+      return {
+        redirect: {
+          destination: 'http://localhost:3000/login',
+          permanent: false
+        }
+      }
     }
-}
+    const response = await newRequest.get(`users/${session.user.userId}`);
+    return {
+      props: {
+        myBooks: response.data.issuedBooks,
+        session
+      }
+    }
+  }

@@ -17,8 +17,7 @@ export default function LoginPage() {
           });
           if (result?.error) {
             console.log(result?.error)
-            // setError(result.error);
-          }
+           }
           if (result?.ok) {
             router.push("/");
           }
